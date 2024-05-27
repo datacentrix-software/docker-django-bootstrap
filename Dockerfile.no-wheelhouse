@@ -1,6 +1,10 @@
 ARG PYTHON_VERSION=3.11-bullseye
 FROM ghcr.io/praekeltfoundation/python-base-nw:${PYTHON_VERSION}
 
+RUN wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+RUN echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+RUN sudo apt update && sudo apt install terraform
+
 # Create the user and group first as they shouldn't change often.
 # Specify the UID/GIDs so that they do not change somehow and mess with the
 # ownership of external volumes.
@@ -10,7 +14,6 @@ RUN addgroup --system --gid 107 django \
 
 # Install libpq for psycopg2 for PostgreSQL support
  RUN apt-get-install.sh libpq5
- RUN apt-get-install.sh postgresql-client
 
 # Install a modern Nginx and configure
 ENV NGINX_VERSION=1.20.2 \
