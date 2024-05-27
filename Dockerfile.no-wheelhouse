@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.10-bullseye
+ARG PYTHON_VERSION=3.11-bullseye
 FROM ghcr.io/praekeltfoundation/python-base-nw:${PYTHON_VERSION}
 
 # Create the user and group first as they shouldn't change often.

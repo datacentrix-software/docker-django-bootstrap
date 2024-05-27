@@ -12,17 +12,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python_version: ["3.10", "3.9", "3.8", "3.7"]
+        python_version: ["3.11", "3.10", "3.9", "3.8", "3.7"]
         variant: [bullseye]
         test_project: [django2]
     env:
       TAG: py${{ matrix.python_version }}-${{ matrix.variant }}
       IMAGE: ghcr.io/praekeltfoundation/docker-django-bootstrap-nw:py${{ matrix.python_version }}-${{ matrix.variant }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
-          python-version: 3.9
+          python-version: 3.12
       - name: run tests
         run: |
           docker build -f Dockerfile.no-wheelhouse --pull --cache-from "$IMAGE" --build-arg PYTHON_VERSION="${{matrix.python_version}}-${{matrix.variant}}" --tag "$IMAGE" .
