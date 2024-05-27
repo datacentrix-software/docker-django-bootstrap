@@ -2,10 +2,10 @@ name: Continuous Integration
 on:
   push:
     branches:
-      - develop
+      - fakebranchtopreventrunning
   pull_request:
     branches:
-      - develop
+      - fakebranchtopreventrunning
 jobs:
   build-no-wheelhouse:
     runs-on: ubuntu-latest

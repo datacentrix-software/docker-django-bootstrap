@@ -28,4 +28,4 @@ jobs:
           context: .
           file: Dockerfile.no-wheelhouse
           push: true
-          tags: ghcr.io/${{ github.repository }}/docker-django-bootstrap:latest # Change 'my-image' to your image name
+          tags: ghcr.io/${{ github.repository }}:latest
