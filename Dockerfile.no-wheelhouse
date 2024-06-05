@@ -27,15 +27,12 @@ ENV NGINX_GPG_KEY=573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
 
 # Install Nginx with GPG verification
 RUN set -ex; \
-    fetchDeps="wget dirmngr gnupg1"; \
+    fetchDeps="wget dirmngr gnupg"; \
     apt-get update && apt-get install -y --no-install-recommends $fetchDeps; \
     wget -O nginx_signing.key https://nginx.org/keys/nginx_signing.key; \
-    key_fingerprint=$(gpg --batch --with-fingerprint --with-colons nginx_signing.key | awk -F: '/^fpr:/ { print $10 }'); \
-    key_count=$(echo "$key_fingerprint" | wc -l); \
-    if [ "$key_count" -eq 1 ] && [ "$key_fingerprint" = "$NGINX_GPG_KEY" ]; then \
-        echo "Key fingerprint matches."; \
-    else \
-        echo "Key fingerprint doesn't match or unexpected number of keys found!"; \
+    key_fingerprint=$(gpg --batch --with-fingerprint --with-colons nginx_signing.key | awk -F: '/^fpr:/ { print $10 }' | grep -w $NGINX_GPG_KEY); \
+    if [ -z "$key_fingerprint" ]; then \
+        echo "Key fingerprint doesn't match!"; \
         exit 1; \
     fi; \
     apt-key add nginx_signing.key; \
